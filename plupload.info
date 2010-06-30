@@ -1,0 +1,7 @@
+; $Id$
+name = Plupload integration module
+description = Upload multiple files to store in a single filefield per node using Plupload library.
+package = CCK
+dependencies[] = filefield
+dependencies[] = imagefield
+core = 6.x

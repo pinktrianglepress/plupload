@@ -2,13 +2,6 @@
 // $Id$ 
 
 /**
- * Implementation of hook_perm().
- */
-function plupload_perm() {
-  return array('bulk upload files with plupload', 'administer plupload bulk uploads');
-}
-
-/**
  * Implementation of hook_menu().
  */
 function plupload_menu() {
@@ -16,15 +9,14 @@ function plupload_menu() {
     'title' => 'Handles uploads',
     'page callback' => 'plupload_handle_uploads',
     'type' => MENU_CALLBACK,
-    //@todo: change this to something appropriate, not sure what.
-    'access arguments' => array('Administer content')
+    'access arguments' => array('access content')
   );
   $items['plupload-test'] = array(
     'title' => 'Test Plupload',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('plupload_test'),
     //@todo: change this to something appropriate, not sure what.
-    'access arguments' => array('Administer content'),
+    'access arguments' => array('Administer site configuration'),
     'type' => MENU_CALLBACK,
   );
   return $items;
@@ -34,6 +26,7 @@ function plupload_test($form, &$form_state) {
   $form['pud'] = array(
     '#type' => 'plupload',
     '#title' => 'Plupload',
+    //'#validators' => array(...);
   );
   
   $form['submit'] = array(
@@ -120,6 +113,9 @@ function plupload_library() {
 }
 
 function plupload_handle_uploads() {
+  
+  // Implement file_validate_size();
+  
   $temp_directory = file_directory_temp();
 
   // Chunk it?

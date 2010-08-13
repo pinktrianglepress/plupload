@@ -7,7 +7,7 @@
         $this = $(this);
         $this.pluploadQueue({
           // General settings
-          runtimes: 'gears,flash,silverlight,browserplus,html5',
+          runtimes: 'gears,browserplus,html5,flash,silverlight',
           url: settings.basePath + 'plupload-handle-uploads',
           //@todo: implement settings for these
           max_file_size: '10mb',

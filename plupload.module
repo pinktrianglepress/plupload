@@ -142,6 +142,72 @@ function plupload_library() {
   return $libraries;
 }
 
+function plupload_handle_uploads() {
+  $temp_directory = file_directory_temp();
+
+  // Chunk it?
+  $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
+  
+  // Get and clean the filename.
+  $file_name = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
+
+  // Clean the fileName for security reasons
+  $file_name = preg_replace('/[^\w\._]+/', '', $file_name);
+  
+  
+  // Look for the content type header
+  if (isset($_SERVER["HTTP_CONTENT_TYPE"])) {
+    $content_type = $_SERVER["HTTP_CONTENT_TYPE"];
+  }
+  if (isset($_SERVER["CONTENT_TYPE"])) {
+    $content_type = $_SERVER["CONTENT_TYPE"];
+  }
+
+  // Is this a multipart upload?
+  if (strpos($content_type, "multipart") !== false) {
+    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+      // Open temp file
+      $out = fopen($targetDir . DIRECTORY_SEPARATOR . $file_name, $chunk == 0 ? "wb" : "ab");
+      if ($out) {
+        // Read binary input stream and append it to temp file
+        $in = fopen($_FILES['file']['tmp_name'], "rb");
+
+        if ($in) {
+          while ($buff = fread($in, 4096))
+            fwrite($out, $buff);
+        } else
+          die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+
+        fclose($out);
+        unlink($_FILES['file']['tmp_name']);
+      } else
+        die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+    } else
+      die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+  }
+  else {
+    // Open temp file
+    $out = fopen($temp_directory . DIRECTORY_SEPARATOR . $file_name, $chunk == 0 ? "wb" : "ab");
+    if ($out) {
+      // Read binary input stream and append it to temp file
+      $in = fopen("php://input", "rb");
+
+      if ($in) {
+        while ($buff = fread($in, 4096))
+          fwrite($out, $buff);
+      } else
+        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+
+      fclose($out);
+    } else
+      die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+  }
+  
+  // Return JSON-RPC response
+  die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+
+}
+
 if (!function_exists('file_uri_to_object')) {
   // @todo: get this committed http://drupal.org/node/685818
 

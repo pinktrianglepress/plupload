@@ -114,9 +114,12 @@ function plupload_library() {
 
 function plupload_handle_uploads() {
   
-  // Implement file_validate_size();
+  // @todo: Implement file_validate_size();
   
-  $temp_directory = file_directory_temp();
+  // Added a variable for this because in HA environments, temporary may need
+  // to be a shared location for this to work.
+  $temporary_file_scheme = variable_get('plupload_temporary_file_scheme', 'temporary');
+  $temp_directory = file_stream_wrapper_get_instance_by_scheme($temporary_file_scheme)->getDirectoryPath();
 
   // Chunk it?
   $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;

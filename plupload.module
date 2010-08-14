@@ -89,6 +89,7 @@ function pluplod_element_value(&$element, $input = FALSE, $form_state = NULL) {
       $key = $reg[2];
       $files[$i][$key] = $value;
     }
+    $files[$i]['tmppath'] = variable_get('plupload_temporary_file_scheme', 'temporary') . '://' . $files[$i]['tmpname'];
   }
   return $files;
 }

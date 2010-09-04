@@ -229,6 +229,12 @@ function plupload_handle_uploads() {
   // Added a variable for this because in HA environments, temporary may need
   // to be a shared location for this to work.
   $temp_directory = variable_get('plupload_temporary_uri', 'temporary://');
+  $writable = file_prepare_directory($temp_directory, FILE_CREATE_DIRECTORY);
+  if (!$writable) {
+    die('{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "Failed to open temporary directory."}, "id" : "id"}');
+  }
+  // Try to make sure this is private via htaccess.
+  file_create_htaccess($temp_directory, TRUE);
 
   // Chunk it?
   $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
@@ -236,9 +242,10 @@ function plupload_handle_uploads() {
   // Get and clean the filename.
   $file_name = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
-  // Clean the fileName for security reasons
-  $file_name = preg_replace('/[^\w\._]+/', '', $file_name);
-  
+  // Check the file name for security reasons
+  if (empty($file_name) || !preg_match('/^[\w\._]+\.tmp$/', $file_name)) {
+    die('{"jsonrpc" : "2.0", "error" : {"code": 105, "message": "Invalid temporary file name."}, "id" : "id"}');
+  }
   
   // Look for the content type header
   if (isset($_SERVER["HTTP_CONTENT_TYPE"])) {
@@ -258,17 +265,24 @@ function plupload_handle_uploads() {
         $in = fopen($_FILES['file']['tmp_name'], "rb");
 
         if ($in) {
-          while ($buff = fread($in, 4096))
+          while ($buff = fread($in, 4096)) {
             fwrite($out, $buff);
-        } else
+          }
+        }
+        else {
           die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+        }
 
         fclose($out);
         unlink($_FILES['file']['tmp_name']);
-      } else
+      }
+      else {
         die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
-    } else
+      }
+    }
+    else {
       die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+    }
   }
   else {
     // Open temp file
@@ -278,19 +292,23 @@ function plupload_handle_uploads() {
       $in = fopen("php://input", "rb");
 
       if ($in) {
-        while ($buff = fread($in, 4096))
+        while ($buff = fread($in, 4096)) {
           fwrite($out, $buff);
-      } else
+        }
+      }
+      else {
         die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+      }
 
       fclose($out);
-    } else
+    }
+    else {
       die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+    }
   }
   
   // Return JSON-RPC response
   die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
-
 }
 
 if (!function_exists('file_uri_to_object')) {

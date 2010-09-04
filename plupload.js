@@ -7,7 +7,7 @@ Drupal.plupload = Drupal.plupload || {};
  * Attaches the Plupload behavior to each Plupload form element.
  */
 Drupal.behaviors.plupload = {
-  attach: function(context, settings) {
+  attach: function (context, settings) {
     $(".plupload-element", context).once('plupload-init', function () {
       var $this = $(this);
 
@@ -48,28 +48,55 @@ Drupal.behaviors.plupload = {
       // Initialize Plupload for this element.
       $this.pluploadQueue(pluploadSettings);
 
-      // Client side form validation (see
-      // http://plupload.com/example_queuewidget.php)
-      $this.closest('form').submit(function(e) {
-        var $form = $(this);
+      // Intercept the form submit to ensure all files are done uploading first.
+      var $form = $this.closest('form');
+      var originalFormAttributes = {
+        'method': $form.attr('method'),
+        'enctype': $form.attr('enctype'),
+        'action': $form.attr('action'),
+        'target': $form.attr('target')
+      };
+      $form.submit(function(e) {
         var uploader = $('.plupload-element', this).pluploadQueue();
 
-        // Validate number of uploaded files
-        if (uploader.total.uploaded == 0) {
-          // Files in queue upload them first
-          if (uploader.files.length > 0) {
-            // When all files are uploaded submit form
-            uploader.bind('UploadProgress',
-            function() {
-              if (uploader.total.uploaded == uploader.files.length) {
-                $form.submit();
+        // Only allow the submit to proceed if there are files and they've all
+        // completed uploading.
+        // @todo Implement a setting for whether the field is required, rather
+        //   than assuming that all are.
+        if (uploader.files.length > 0 && uploader.total.uploaded == uploader.files.length) {
+          // Plupload's html4 runtime has a bug where it changes the attributes
+          // of the form to handle the file upload, but then fails to change
+          // them back after the upload is finished.
+          for (var attr in originalFormAttributes) {
+            $form.attr(attr, originalFormAttributes[attr]);
+          }
+          return;
+        }
+
+        // If we're here, stop the form submit, and perform logic as appropriate
+        // to the current upload state.
+        e.preventDefault();
+        if (uploader.files.length == 0) {
+          alert('You must at least upload one file.');
+        }
+        else if (uploader.state == plupload.STARTED) {
+          alert('Your files are currently being uploaded. Please wait until they are finished before submitting this form.');
+        }
+        else {
+          var progressHandler = function() {
+            if (uploader.total.uploaded == uploader.files.length) {
+              // Plupload's html4 runtime has a bug where it changes the
+              // attributes of the form to handle the file upload, but then
+              // fails to change them back after the upload is finished.
+              for (var attr in originalFormAttributes) {
+                $form.attr(attr, originalFormAttributes[attr]);
               }
-            });
-
-            uploader.start();
-          } else alert('You must at least upload one file.');
-
-          e.preventDefault();
+              uploader.unbind('UploadProgress', progressHandler);
+              $form.submit();
+            }
+          };
+          uploader.bind('UploadProgress', progressHandler);
+          uploader.start();
         }
       });
     });

@@ -86,7 +86,8 @@ function plupload_element_info() {
     '#attributes' => array('class' => array('plupload-element')),
     // @todo
     //'#element_validate' => array('file_managed_file_validate'),
-    '#theme_wrappers' => array('container'),
+    '#theme_wrappers' => array('form_element'),
+    '#theme' => 'container',
     '#value_callback' => 'plupload_element_value',
     '#attached' => array(
       'library' => array(array('plupload', 'plupload')),
@@ -164,6 +165,11 @@ function plupload_element_pre_render($element) {
       'extensions' => str_replace(' ', ',', $element['#upload_validators']['file_validate_extensions'][0]),
     );
   }
+  
+  if (empty($element['#description'])) {
+    $element['#description'] = '';
+  }
+  $element['#description'] = theme('file_upload_help', array('description' => $element['#description'], 'upload_validators' => $element['#upload_validators']));
 
   $element['#attached']['js'][] = array(
     'type' => 'setting',

@@ -51,28 +51,6 @@
   font-family:"Lucida Grande", Verdana, sans-serif;
 }
 
-.plupload_header {
-  background:#2A2C2E url('images/backgrounds.gif') repeat-x;
-}
-
-.plupload_header_content {
-  min-height:50px;
-  color:#FFF;
-  background:none;
-  padding-left:8px;
-}
-
-.plupload_header_title {
-  font:normal 14px sans-serif;
-  font-family:"Lucida Grande", Verdana, sans-serif;
-  padding:6px 0 3px;
-}
-
-.plupload_header_text {
-  font:normal 10px sans-serif;
-  font-family:"Lucida Grande", Verdana, sans-serif;
-}
-
 .plupload_filelist {
 list-style:none;
   margin:0;
@@ -201,7 +179,7 @@ list-style:none;
   line-height:0;
 }
 
-  li.plupload_droptext {
+li.plupload_droptext {
   background:transparent;
   text-align:center;
   vertical-align:middle;
@@ -212,6 +190,10 @@ list-style:none;
 
 .plupload {
   border:solid 1px #ccc;
+}
+
+.plupload_header {
+  display:none;
 }
 
 .plupload_button,.plupload_button:hover {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Implementation of hook_menu().
@@ -41,12 +41,12 @@ function plupload_test($form, &$form_state) {
     '#title' => 'Plupload',
     //'#validators' => array(...);
   );
-  
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Submit',
   );
-  
+
   return $form;
 }
 
@@ -164,7 +164,7 @@ function plupload_element_pre_render($element) {
       'extensions' => str_replace(' ', ',', $element['#upload_validators']['file_validate_extensions'][0]),
     );
   }
-  
+
   if (empty($element['#description'])) {
     $element['#description'] = '';
   }
@@ -228,9 +228,9 @@ function plupload_library() {
 }
 
 function plupload_handle_uploads() {
-  
+
   // @todo: Implement file_validate_size();
-  
+
   // Added a variable for this because in HA environments, temporary may need
   // to be a shared location for this to work.
   $temp_directory = variable_get('plupload_temporary_uri', 'temporary://');
@@ -243,7 +243,7 @@ function plupload_handle_uploads() {
 
   // Chunk it?
   $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
-  
+
   // Get and clean the filename.
   $file_name = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
@@ -251,7 +251,7 @@ function plupload_handle_uploads() {
   if (empty($file_name) || !preg_match('/^[\w\._]+\.tmp$/', $file_name)) {
     die('{"jsonrpc" : "2.0", "error" : {"code": 105, "message": "Invalid temporary file name."}, "id" : "id"}');
   }
-  
+
   // Look for the content type header
   if (isset($_SERVER["HTTP_CONTENT_TYPE"])) {
     $content_type = $_SERVER["HTTP_CONTENT_TYPE"];
@@ -311,7 +311,7 @@ function plupload_handle_uploads() {
       die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
     }
   }
-  
+
   // Return JSON-RPC response
   die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 }

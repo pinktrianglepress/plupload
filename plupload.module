@@ -108,8 +108,10 @@ function plupload_element_value(&$element, $input = FALSE, $form_state = NULL) {
       $i = $reg[1];
       $key = $reg[2];
       $files[$i][$key] = $value;
+      if ($key == 'tmpname') {
+        $files[$i]['tmppath'] = variable_get('plupload_temporary_uri', 'temporary://') . plupload_fix_temporary_filename($files[$i]['tmpname']);
+      }
     }
-    $files[$i]['tmppath'] = variable_get('plupload_temporary_uri', 'temporary://') . $files[$i]['tmpname'];
   }
   return $files;
 }
@@ -246,6 +248,7 @@ function plupload_handle_uploads() {
 
   // Get and clean the filename.
   $file_name = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
+  $file_name = plupload_fix_temporary_filename($file_name);
 
   // Check the file name for security reasons
   if (empty($file_name) || !preg_match('/^[\w\._]+\.tmp$/', $file_name)) {
@@ -264,7 +267,7 @@ function plupload_handle_uploads() {
   if (strpos($content_type, "multipart") !== false) {
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
       // Open temp file
-      $out = fopen($temp_directory . DIRECTORY_SEPARATOR . $file_name, $chunk == 0 ? "wb" : "ab");
+      $out = fopen($temp_directory . $file_name, $chunk == 0 ? "wb" : "ab");
       if ($out) {
         // Read binary input stream and append it to temp file
         $in = fopen($_FILES['file']['tmp_name'], "rb");
@@ -291,7 +294,7 @@ function plupload_handle_uploads() {
   }
   else {
     // Open temp file
-    $out = fopen($temp_directory . DIRECTORY_SEPARATOR . $file_name, $chunk == 0 ? "wb" : "ab");
+    $out = fopen($temp_directory . $file_name, $chunk == 0 ? "wb" : "ab");
     if ($out) {
       // Read binary input stream and append it to temp file
       $in = fopen("php://input", "rb");
@@ -342,6 +345,38 @@ if (!function_exists('file_uri_to_object')) {
     $file->status = FILE_STATUS_PERMANENT;
     return $file;
   }
+}
+
+/**
+ * Fix the temporary filename provided by the plupload library.
+ *
+ * Newer versions of the plupload JavaScript library upload temporary files
+ * with names that contain the intended final prefix of the uploaded file
+ * (e.g., ".jpg" or ".png"). Older versions of the plupload library always use
+ * ".tmp" as the temporary file extension.
+ *
+ * We prefer the latter behavior, since although the plupload temporary
+ * directory where these files live is always expected to be private (and we
+ * protect it via .htaccess; see plupload_handle_uploads()), in case it ever
+ * isn't we don't want people to be able to upload files with an arbitrary
+ * extension into that directory.
+ *
+ * This function therefore fixes the plupload temporary filenames so that they
+ * will always use a ".tmp" extension.
+ *
+ * @param $filename
+ *   The original temporary filename provided by the plupload library.
+ *
+ * @return
+ *   The corrected temporary filename, with a ".tmp" extension replacing the
+ *   original one.
+ */
+function plupload_fix_temporary_filename($filename) {
+  $pos = strpos($filename, '.');
+  if ($pos !== FALSE) {
+    $filename = substr_replace($filename, '.tmp', $pos);
+  }
+  return $filename;
 }
 
 /**

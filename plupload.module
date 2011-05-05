@@ -241,7 +241,7 @@ function plupload_library() {
   $libraries['plupload'] = array(
     'title' => 'Plupload',
     'website' => 'http://www.plupload.com',
-    'version' => '1.3.9',
+    'version' => '1.4.3.2',
     'js' => array(
       // @todo - only add gears JS if gears is an enabled runtime.
       // $library_path . '/js/gears_init.js' => array(),

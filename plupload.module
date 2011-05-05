@@ -246,8 +246,8 @@ function plupload_library() {
     'js' => array(
       // @todo - only add gears JS if gears is an enabled runtime.
       // $library_path . '/js/gears_init.js' => array(),
-      $library_path . '/js/jquery.plupload.queue.min.js' => array(),
-      $library_path . '/js/plupload.full.min.js' => array(),
+      $library_path . '/js/jquery.plupload.queue/jquery.plupload.queue.js' => array(),
+      $library_path . '/js/plupload.full.js' => array(),
       array('type' => 'setting', 'data' => array('plupload' => array(
         // Element-specific settings get keyed by the element id (see
         // plupload_element_pre_render()), so put default settings in

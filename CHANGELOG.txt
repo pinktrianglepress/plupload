@@ -1,0 +1,4 @@
+CHANGELOG for Plupload integration for Drupal 7
+
+Plupload integration 7.x-1.x-dev
+================================

@@ -63,7 +63,7 @@ function plupload_test_submit($form, &$form_state) {
       // Note - not using file_move here because if we call file_get_mime
       // (in file_uri_to_object) while it has a .tmp extension, it horks.
       $destination = file_unmanaged_move($source, $destination, FILE_EXISTS_RENAME);
-      $file = file_uri_to_object($destination);
+      $file = plupload_file_uri_to_object($destination);
       file_save($file);
       $saved_files[] = $file;
     }
@@ -193,7 +193,7 @@ function plupload_element_validate($element, &$form_state) {
     //   now, we can at least rely on file_validate_extensions() running
     //   successfully.
     $destination = variable_get('file_default_scheme', 'public') . '://' . $file_info['name'];
-    $file = file_uri_to_object($destination);
+    $file = plupload_file_uri_to_object($destination);
     foreach (file_validate($file, $element['#upload_validators']) as $error_message) {
       form_error($element, $error_message);
     }
@@ -377,32 +377,31 @@ function plupload_handle_uploads() {
   die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 }
 
-if (!function_exists('file_uri_to_object')) {
-  // @todo: get this committed http://drupal.org/node/685818
-
-  /**
-   * Returns a file object which can be passed to file_save().
-   *
-   * @param $uri
-   *  A string containing the URI, path, or filename.
-   * @return
-   *  A file object, or FALSE on error.
-   */
-  function file_uri_to_object($uri) {
-    global $user;
-    $uri = file_stream_wrapper_uri_normalize($uri);
-    $wrapper = file_stream_wrapper_get_instance_by_uri($uri);
-    $file = new StdClass;
-    $file->uid = $user->uid;
-    $file->filename = basename($uri);
-    $file->uri = $uri;
-    $file->filemime = file_get_mimetype($uri);
-    // This is gagged because some uris will not support it.
-    $file->filesize = @filesize($uri);
-    $file->timestamp = REQUEST_TIME;
-    $file->status = FILE_STATUS_PERMANENT;
-    return $file;
-  }
+/**
+ * Returns a file object which can be passed to file_save().
+ *
+ * @param $uri
+ *  A string containing the URI, path, or filename.
+ * @return
+ *  A file object, or FALSE on error.
+ *
+ * @todo Replace with calls to this function with file_uri_to_object() when
+ * http://drupal.org/node/685818 is fixed in core.
+ */
+function plupload_file_uri_to_object($uri) {
+  global $user;
+  $uri = file_stream_wrapper_uri_normalize($uri);
+  $wrapper = file_stream_wrapper_get_instance_by_uri($uri);
+  $file = new StdClass;
+  $file->uid = $user->uid;
+  $file->filename = basename($uri);
+  $file->uri = $uri;
+  $file->filemime = file_get_mimetype($uri);
+  // This is gagged because some uris will not support it.
+  $file->filesize = @filesize($uri);
+  $file->timestamp = REQUEST_TIME;
+  $file->status = FILE_STATUS_PERMANENT;
+  return $file;
 }
 
 /**

@@ -161,6 +161,11 @@ function plupload_element_value(&$element, $input = FALSE, $form_state = NULL) {
         // temporary files in before trying to copy them.
         $files[$i]['tmppath'] = variable_get('plupload_temporary_uri', 'temporary://') . $value;
       }
+      elseif ($key == 'name') {
+        if (module_exists('transliteration')) {
+          $value = transliteration_clean_filename($value);
+        }
+      }
 
       // Store the final value in the array we will return.
       $files[$i][$key] = $value;

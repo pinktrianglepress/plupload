@@ -2,4 +2,5 @@ CHANGELOG for Plupload integration for Drupal 7
 
 Plupload integration 7.x-1.x-dev
 ================================
+- #1267190 by Moloc: Plupload transliteration support for d7
 - #1240654 by Dave Reid: Use a proper namespace for file_uri_to_object().

@@ -155,7 +155,7 @@ function plupload_element_value(&$element, $input = FALSE, $form_state = NULL) {
       // The temporary file name has to be processed further so it matches what
       // was used when the file was written; see plupload_handle_uploads().
       if ($key == 'tmpname') {
-        $value = plupload_fix_temporary_filename($value);
+        $value = _plupload_fix_temporary_filename($value);
         // We also define an extra key 'tmppath' which is useful so that submit
         // handlers do not need to know which directory plupload stored the
         // temporary files in before trying to copy them.
@@ -312,7 +312,7 @@ function plupload_handle_uploads() {
 
   // Get and clean the filename.
   $file_name = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
-  $file_name = plupload_fix_temporary_filename($file_name);
+  $file_name = _plupload_fix_temporary_filename($file_name);
 
   // Check the file name for security reasons; it must contain letters, numbers
   // and underscores followed by a (single) ".tmp" extension. Since this check
@@ -442,7 +442,7 @@ function plupload_file_uri_to_object($uri) {
  *   The corrected temporary filename, with a ".tmp" extension replacing the
  *   original one.
  */
-function plupload_fix_temporary_filename($filename) {
+function _plupload_fix_temporary_filename($filename) {
   $pos = strpos($filename, '.');
   if ($pos !== FALSE) {
     $filename = substr_replace($filename, '.tmp', $pos);

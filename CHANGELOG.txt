@@ -2,6 +2,7 @@ CHANGELOG for Plupload integration for Drupal 7
 
 Plupload integration 7.x-1.x-dev
 ================================
+- #1316438 by jcfiala, slashrsm: Plupload in AJAX call causes form.submit handler to be added multiple times
 - #1300620 by jamiecuthill, ksenzee: Update to 1.5.1.1 because uploading is broken in Firefox 7
 - #1121070 by Moloc: Warning: unlink(...) [function.unlink]: Permission denied in plupload_handle_uploads()
 - #1348892 by slashrsm, Moloc: Show library version in status report

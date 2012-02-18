@@ -346,6 +346,7 @@ function plupload_handle_uploads() {
           while ($buff = fread($in, 4096)) {
             fwrite($out, $buff);
           }
+          fclose($in);
         }
         else {
           die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
@@ -373,6 +374,7 @@ function plupload_handle_uploads() {
         while ($buff = fread($in, 4096)) {
           fwrite($out, $buff);
         }
+        fclose($in);
       }
       else {
         die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');

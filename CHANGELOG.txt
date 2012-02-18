@@ -1,7 +1,7 @@
 CHANGELOG for Plupload integration for Drupal 7
 
-Plupload integration 7.x-1.x-dev
-================================
+Plupload integration 7.x-1.0-beta4
+==================================
 - #1230632 by ksenzee: Hard-coded file size limits.
 - #1219992 by slashrsm, axe312, Dave Reid: Add support for Drupal native translations.
 - #1111054 by George Petsagourakis: Convert plupload_fix_temporary_filename() a private function

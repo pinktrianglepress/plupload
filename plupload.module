@@ -239,10 +239,17 @@ function plupload_element_pre_render($element) {
 }
 
 /**
+ * Returns the path to the plupload library.
+ */
+function _plupload_library_path() {
+  return variable_get('plupload_library_path', module_exists('libraries') ? libraries_get_path('plupload') : 'sites/all/libraries/plupload');
+}
+
+/**
  * Implements hook_library().
  */
 function plupload_library() {
-  $library_path = variable_get('plupload_library_path', module_exists('libraries') ? libraries_get_path('plupload') : 'sites/all/libraries/plupload');
+  $library_path = _plupload_library_path();
   $libraries['plupload'] = array(
     'title' => 'Plupload',
     'website' => 'http://www.plupload.com',

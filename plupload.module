@@ -290,6 +290,12 @@ function plupload_library() {
       ))),
     ),
   );
+
+  if (module_exists('locale')) {
+    $module_path = drupal_get_path('module', 'plupload');
+    $libraries['plupload']['js'][$module_path . '/js/i18n.js'] = array('scope' => 'footer');
+  }
+
   return $libraries;
 }
 

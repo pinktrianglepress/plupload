@@ -359,7 +359,7 @@ function plupload_handle_uploads() {
         }
 
         fclose($out);
-        unlink($_FILES['file']['tmp_name']);
+        drupal_unlink($_FILES['file']['tmp_name']);
       }
       else {
         die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');

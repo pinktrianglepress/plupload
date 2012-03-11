@@ -2,6 +2,7 @@ CHANGELOG for Plupload integration for Drupal 7
 
 Plupload integration 7.x-1.x-dev
 ==================================
+- #1414486 by nbucknor, annblack: Allow for Multiple Plupload elements in a form.
 - #1461884 by atlea: File uploads larger than php post_max_size broken
 - #1445172 by Moloc: Use drupal_unlink() instead unlink()
 

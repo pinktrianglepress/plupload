@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function plupload_menu() {
   $items['plupload-handle-uploads'] = array(
@@ -26,7 +26,7 @@ function plupload_menu() {
  * Verifies the token for this request.
  */
 function plupload_upload_access() {
-  foreach(func_get_args() as $permission) {
+  foreach (func_get_args() as $permission) {
     if (!user_access($permission)) {
       return FALSE;
     }
@@ -340,7 +340,7 @@ function plupload_handle_uploads() {
   }
 
   // Is this a multipart upload?
-  if (strpos($content_type, "multipart") !== false) {
+  if (strpos($content_type, "multipart") !== FALSE) {
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
       // Open temp file
       $out = fopen($temp_directory . $file_name, $chunk == 0 ? "wb" : "ab");

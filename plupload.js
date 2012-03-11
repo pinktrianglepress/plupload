@@ -83,7 +83,10 @@ Drupal.behaviors.pluploadform = {
             //completed uploading.
             //@todo Implement a setting for whether the field is required, rather
             //than assuming that all are.
-            if (uploader.files.length == 0 && !pluploadSettings.required) {
+            if (uploader.state == plupload.STARTED) {
+              errors = Drupal.t("Please wait while your files are being uploaded.");              
+            }
+            else if (uploader.files.length == 0 && !pluploadSettings.required) {
               completedPluploaders++;
             }       
   
@@ -128,12 +131,9 @@ Drupal.behaviors.pluploadform = {
           }
           else if (0 < errors.length){
             alert(errors);
-            return false;
           }
-          else {
-            alert(Drupal.t('Please wait while your files are being uploaded.'));
-            return false;
-          }
+         
+          return false;
         });
       }
     });

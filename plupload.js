@@ -84,14 +84,14 @@ Drupal.behaviors.pluploadform = {
             //@todo Implement a setting for whether the field is required, rather
             //than assuming that all are.
             if (uploader.state == plupload.STARTED) {
-              errors = Drupal.t("Please wait while your files are being uploaded.");              
+              errors += Drupal.t("Please wait while your files are being uploaded.");              
             }
             else if (uploader.files.length == 0 && !pluploadSettings.required) {
               completedPluploaders++;
             }       
   
             else if (uploader.files.length == 0) { 
-              errors = Drupal.t("@index: You must upload at least one file.\n",{'@index': (index1)});
+              errors += Drupal.t("@index: You must upload at least one file.\n",{'@index': (index + 1)});
             }       
   
             else if (uploader.files.length > 0 && uploader.total.uploaded == uploader.files.length) {

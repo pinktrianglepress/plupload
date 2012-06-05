@@ -1,5 +1,9 @@
 CHANGELOG for Plupload integration for Drupal 7
 
+Plupload integration 7.x-1.x-dev
+=================================
+- #1426088 by slashrsm: Anonymous User can't upload.
+
 Plupload integration 7.x-1.0
 =================================
 - #1414486 by nbucknor, slashrsm: Improvements of error handling for multiple plupload elements on a single form.

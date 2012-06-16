@@ -2,6 +2,7 @@ CHANGELOG for Plupload integration for Drupal 7
 
 Plupload integration 7.x-1.x-dev
 =================================
+- #1565898 by slashrsm: Create docs for Plupload element usage in README.txt.
 - #1111036 by slashrsm: Blacklist script extensions if 'allow_insecure_uploads' isn't set to TRUE.
 - #1426088 by slashrsm: Anonymous User can't upload.
 

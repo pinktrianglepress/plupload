@@ -219,7 +219,8 @@ function plupload_element_validate($element, &$form_state) {
     $destination = variable_get('file_default_scheme', 'public') . '://' . $file_info['name'];
     $file = plupload_file_uri_to_object($destination);
     foreach (file_validate($file, $element['#upload_validators']) as $error_message) {
-      form_error($element, $error_message);
+      $message = t('The specified file %name could not be uploaded.', array('%name' => $file->filename));
+      form_error($element, $message . ' ' . $error_message);
     }
   }
 }

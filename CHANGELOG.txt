@@ -1,7 +1,8 @@
 CHANGELOG for Plupload integration for Drupal 7
 
-Plupload integration 7.x-1.x-dev
+Plupload integration 7.x-2.x-dev
 =================================
+- #1814744 by slashrsm, Kevin Hankens: File URI not available to hook_file_validate() implementations.
 - by slashrsm: Fix CodeSniffer errors.
 - #1827368 by Kevin Hankens: Fixed Use standard language when validating files.
 - #1565898 by slashrsm: Create docs for Plupload element usage in README.txt.

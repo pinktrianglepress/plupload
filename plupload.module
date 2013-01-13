@@ -306,7 +306,7 @@ function plupload_library() {
               'runtimes' => 'html5,flash,html4',
               'url' => url('plupload-handle-uploads', array('query' => array('plupload_token' => drupal_get_token('plupload-handle-uploads')))),
               'max_file_size' => file_upload_max_size() . 'b',
-              'chunk_size' => '1mb',
+              'chunk_size' => parse_size(ini_get('post_max_size')) . 'b',
               'unique_names' => TRUE,
               'flash_swf_url' => file_create_url($library_path . '/js/plupload.flash.swf'),
               'silverlight_xap_url' => file_create_url($library_path . '/js/plupload.silverlight.xap'),

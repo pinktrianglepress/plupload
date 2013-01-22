@@ -1,7 +1,8 @@
 CHANGELOG for Plupload integration for Drupal 7
 
-Plupload integration 7.x-1.x-dev
+Plupload integration 7.x-1.1
 =================================
+- #1895328 by larowlan, slashrsm: Fixed Security exploit in plupload external library examples folder.
 - #1230632 by -enzo-, slashrsm: Fixed hard-coded file size limits.
 - by slashrsm: Fix CodeSniffer errors.
 - #1827368 by Kevin Hankens: Fixed Use standard language when validating files.

@@ -81,7 +81,7 @@ Drupal.behaviors.pluploadform = {
   
             //Only allow the submit to proceed if there are files and they've all
             //completed uploading.
-            //@todo Implement a setting for whether the field is required, rather
+            //TODO: Implement a setting for whether the field is required, rather
             //than assuming that all are.
             if (uploader.state == plupload.STARTED) {
               errors += Drupal.t("Please wait while your files are being uploaded.");              

@@ -2,6 +2,7 @@ CHANGELOG for Plupload integration for Drupal 7
 
 Plupload integration 7.x-1.x-dev
 =================================
+- #1903818 by quicksketch, slashrsm: Fixed Double dollar signs in hook_requirements().
 - #1506642 by MrHaroldA | succinct: Fixed plupload.js issue with Internet Explorer.
 
 Plupload integration 7.x-1.1

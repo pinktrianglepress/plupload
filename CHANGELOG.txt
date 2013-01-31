@@ -2,6 +2,7 @@ CHANGELOG for Plupload integration for Drupal 7
 
 Plupload integration 7.x-2.x-dev
 =================================
+- #1903818 by quicksketch, slashrsm: Fixed Double dollar signs in hook_requirements().
 - #1506642 by MrHaroldA | succinct: Fixed plupload.js issue with Internet Explorer.
 - #1814744 by slashrsm, Kevin Hankens: File URI not available to hook_file_validate() implementations.
 - #1895328 by larowlan, slashrsm: Fixed Security exploit in plupload external library examples folder.

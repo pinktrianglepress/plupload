@@ -262,6 +262,11 @@ function plupload_element_pre_render($element) {
     );
   }
 
+  // Add a specific submit element that we want to click if one is specified.
+  if (!empty($element['#submit_element'])) {
+    $settings['submit_element'] = $element['#submit_element'];
+  }
+
   if (empty($element['#description'])) {
     $element['#description'] = '';
   }

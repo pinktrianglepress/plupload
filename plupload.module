@@ -193,7 +193,7 @@ function plupload_element_value(&$element, $input = FALSE, $form_state = NULL) {
         $files[$i]['tmppath'] = variable_get('plupload_temporary_uri', 'temporary://') . $value;
       }
       elseif ($key == 'name') {
-        if (module_exists('transliteration')) {
+        if (module_exists('transliteration') && variable_get('transliteration_file_uploads', TRUE)) {
           $value = transliteration_clean_filename($value);
         }
       }
